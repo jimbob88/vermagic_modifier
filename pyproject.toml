@@ -16,3 +16,6 @@ dynamic = ["dependencies", "optional-dependencies"]
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 optional-dependencies = {dev = { file = ["requirements-dev.txt"] }}
+
+[tool.isort]
+profile = "black"
