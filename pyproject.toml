@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vermagic_modifier"
+authors = [
+    {name = "James Blackburn", email = "blackburnfjames@gmail.com"}
+]
+description = "Patch the vermagic in a Linux Kernel Module"
+version = "0.0.1"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
