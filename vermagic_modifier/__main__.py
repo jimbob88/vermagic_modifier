@@ -2,7 +2,6 @@
 
 import argparse
 from importlib import metadata
-from importlib.metadata import PackageMetadata
 
 
 class ParseArgs:
@@ -31,7 +30,7 @@ class ParseArgs:
         return self._metadata.get("Summary", "No description given")
 
     @property
-    def _metadata(self) -> PackageMetadata:
+    def _metadata(self) -> metadata.PackageMetadata:
         """Information from pyproject toml."""
         return metadata.metadata(self._project_name)
 
