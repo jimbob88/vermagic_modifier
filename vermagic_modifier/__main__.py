@@ -5,6 +5,8 @@ import logging
 import pathlib
 from importlib import metadata
 
+from vermagic_modifier import discoverer
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s %(name)s %(levelname)s: %(message)s"
@@ -61,6 +63,15 @@ def main():
     args = get_args()
     modfile: pathlib.Path = args.modfile
     logger.info("Analysing vermagic info in %s", modfile)
+
+    with modfile.open("rb") as binary_modstreamable:
+        modinfo_data = discoverer.ModInfoDiscoverer(
+            binary_modstreamable
+        ).get_modinfo_data()
+
+    logger.debug("Loaded RAW modinfo data: %s", modinfo_data)
+    modinfo_dict = discoverer.parse_modinfo_data(modinfo_data)
+    logger.info("Loaded modinfo data: %s", modinfo_dict)
 
 
 if __name__ == "__main__":

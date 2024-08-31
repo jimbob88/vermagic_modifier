@@ -27,3 +27,19 @@ class ModInfoDiscoverer:
         """Gets bytes representation from modinfo."""
         modinfo_section = self.get_section(".modinfo")
         return modinfo_section.data()
+
+
+def _parse_modinfo_data(modinfo_data: bytes) -> dict[bytes, bytes]:
+    """Get key value pairs from modinfo."""
+    modinfo_dict = {}
+    modinfo_pairs = [pair for pair in modinfo_data.split(b"\x00") if pair]
+    for key_value_pair in modinfo_pairs:
+        key, value = key_value_pair.split(b"=", 1)
+        modinfo_dict[key] = value
+    return modinfo_dict
+
+
+def parse_modinfo_data(modinfo_data: bytes) -> dict[str, str]:
+    """Get decoded key value pairs from modinfo."""
+    modinfo_dict = _parse_modinfo_data(modinfo_data)
+    return {key.decode(): value.decode() for key, value in modinfo_dict.items()}
