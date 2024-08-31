@@ -19,3 +19,6 @@ optional-dependencies = {dev = { file = ["requirements-dev.txt"] }}
 
 [tool.isort]
 profile = "black"
+
+[tool.pylint.format]
+max-line-length = 120

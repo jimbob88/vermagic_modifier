@@ -5,7 +5,7 @@ import logging
 import pathlib
 from importlib import metadata
 
-from vermagic_modifier import discoverer
+from vermagic_modifier import discoverer, modifier
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -27,7 +27,18 @@ class ParseArgs:
         self._parser.add_argument(
             "--version", action="version", version=self.version_string
         )
-        self._parser.add_argument("modfile", action="store", type=pathlib.Path)
+        self._parser.add_argument(
+            "modfile",
+            action="store",
+            type=pathlib.Path,
+            help="A Linux Kernel Module File (e.g. lib80211.ko)",
+        )
+        self._parser.add_argument(
+            "new_vermagic",
+            action="store",
+            type=str,
+            help="The replacement vermagic (e.g. '5.15.0-119-generic SMP mod_unload modversions')",
+        )
 
     @property
     def version_string(self) -> str:
@@ -72,6 +83,20 @@ def main():
     logger.debug("Loaded RAW modinfo data: %s", modinfo_data)
     modinfo_dict = discoverer.parse_modinfo_data(modinfo_data)
     logger.info("Loaded modinfo data: %s", modinfo_dict)
+
+    if "vermagic" in modinfo_dict:
+        logger.info("Current vermagic: '%s'", modinfo_dict["vermagic"])
+    else:
+        logger.warning("No existing vermagic in modinfo, adding anyway.")
+
+    logger.info("Setting vermagic to '%s'", args.new_vermagic)
+    modinfo_dict["vermagic"] = args.new_vermagic
+
+    logger.info("New modinfo data: %s", modinfo_dict)
+
+    serialised = modifier.serialize_modinfo_dict(modinfo_dict)
+
+    logger.debug("New RAW modinfo data: %s", serialised)
 
 
 if __name__ == "__main__":
