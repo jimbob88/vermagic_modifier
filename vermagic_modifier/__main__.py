@@ -1,6 +1,7 @@
 """Commandline tool for modifying vermagic data."""
 
 import argparse
+import pathlib
 from importlib import metadata
 
 
@@ -18,6 +19,7 @@ class ParseArgs:
         self._parser.add_argument(
             "--version", action="version", version=self.version_string
         )
+        self._parser.add_argument("modfile", action="store", type=pathlib.Path)
 
     @property
     def version_string(self) -> str:
@@ -50,7 +52,8 @@ def get_args():
 
 def main():
     """Commandline core logic."""
-    get_args()
+    args = get_args()
+    print(args.modfile)
 
 
 if __name__ == "__main__":
