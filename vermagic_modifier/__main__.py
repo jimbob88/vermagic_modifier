@@ -34,10 +34,18 @@ class ParseArgs:
             help="A Linux Kernel Module File (e.g. lib80211.ko)",
         )
         self._parser.add_argument(
-            "new_vermagic",
+            "--new_vermagic",
             action="store",
             type=str,
+            required=True,
             help="The replacement vermagic (e.g. '5.15.0-119-generic SMP mod_unload modversions')",
+        )
+        self._parser.add_argument(
+            "--new_modfile",
+            action="store",
+            type=pathlib.Path,
+            required=True,
+            help="Where to place the new module file (e.g. ./lib80211_modified.ko)",
         )
 
     @property
