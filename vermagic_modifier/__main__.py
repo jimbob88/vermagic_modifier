@@ -1,8 +1,14 @@
 """Commandline tool for modifying vermagic data."""
 
 import argparse
+import logging
 import pathlib
 from importlib import metadata
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s %(name)s %(levelname)s: %(message)s"
+)
 
 
 class ParseArgs:
@@ -53,7 +59,8 @@ def get_args():
 def main():
     """Commandline core logic."""
     args = get_args()
-    print(args.modfile)
+    modfile: pathlib.Path = args.modfile
+    logger.info("Analysing vermagic info in %s", modfile)
 
 
 if __name__ == "__main__":
