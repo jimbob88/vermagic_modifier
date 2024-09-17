@@ -1,1 +1,2 @@
-pyelftools
+future
+git+https://github.com/jimbob88/pybfd3.git@binutils-2-40
