@@ -5,7 +5,7 @@ import logging
 import pathlib
 from importlib import metadata
 
-from vermagic_modifier import discoverer, modifier
+from vermagic_modifier import discoverer
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -83,28 +83,9 @@ def main():
     modfile: pathlib.Path = args.modfile
     logger.info("Analysing vermagic info in %s", modfile)
 
-    with modfile.open("rb") as binary_modstreamable:
-        modinfo_data = discoverer.ModInfoDiscoverer(
-            binary_modstreamable
-        ).get_modinfo_data()
-
-    logger.debug("Loaded RAW modinfo data: %s", modinfo_data)
-    modinfo_dict = discoverer.parse_modinfo_data(modinfo_data)
-    logger.info("Loaded modinfo data: %s", modinfo_dict)
-
-    if "vermagic" in modinfo_dict:
-        logger.info("Current vermagic: '%s'", modinfo_dict["vermagic"])
-    else:
-        logger.warning("No existing vermagic in modinfo, adding anyway.")
-
-    logger.info("Setting vermagic to '%s'", args.new_vermagic)
-    modinfo_dict["vermagic"] = args.new_vermagic
-
-    logger.info("New modinfo data: %s", modinfo_dict)
-
-    serialised = modifier.serialize_modinfo_dict(modinfo_dict)
-
-    logger.debug("New RAW modinfo data: %s", serialised)
+    vermagic_discover = discoverer.VermagicDiscover(modfile)
+    modinfo = vermagic_discover.get_modinfo()
+    logger.info("Got modinfo: %s", modinfo)
 
 
 if __name__ == "__main__":
