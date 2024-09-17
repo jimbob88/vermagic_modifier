@@ -84,11 +84,8 @@ def main():
     logger.info("Analysing vermagic info in %s", modfile)
 
     vermagic_discover = discoverer.VermagicDiscover(modfile)
-    modinfo = vermagic_discover.get_modinfo()
+    modinfo = vermagic_discover.get_modinfo_content()
     logger.info("Got modinfo: %s", modinfo)
-
-    modinfo_content = modinfo.content
-    logger.info("Got the following content from modinfo: %s", modinfo_content)
 
 
 if __name__ == "__main__":
